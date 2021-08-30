@@ -1,0 +1,3 @@
+Here is the first sentence.  Another sentence is here.
+This sentence is on a new line.  Corner case includes this, that, other, (ect.)   Here is
+another corner case with a quote "test quote."  New sentence is here.
