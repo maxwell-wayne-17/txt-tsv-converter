@@ -27,7 +27,17 @@ def read_file(file_name):
             else:
                 #Cases where period may not be end of sentence
                 if sentence[period_index + 1] == '\"' or sentence[period_index + 1] == ')':
-                    sub_sentence += sentence.su
+                    sub_sentence += sentence[0:period_index + 2]
+                #Case where period is end of sentence
+                else:
+                    sub_sentence += sentence[0:period_index + 2]
+
+                #Separate words by tabs
+                sub_sentence.replace(" ", "\t")
+                #Add to list output
+                converted_lines.add(sub_sentence)
+                #Clear subsentence
+                sub_sentence.clear()
 
 
 
