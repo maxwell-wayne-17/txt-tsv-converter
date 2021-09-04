@@ -37,9 +37,10 @@ def read_file(file_name):
                 else:
                     sub_sentence += sentence[0:period_index]
 
-                # Separate words by tabs
+                # Separate **SENTENCE AND RELATIONSHIP** by tabs
+                # (e.g, each index of list is line number \t sentence \t relationship)
                 sub_sentence = sub_sentence.strip()
-                sub_sentence = sub_sentence.replace(" ", "\t")
+                #sub_sentence = sub_sentence.replace(" ", "\t")
                 sub_sentence += "\t" + "-1"
                 # Add to list output
                 converted_lines.append(sub_sentence)
@@ -61,12 +62,12 @@ def read_file(file_name):
 
 test_list = read_file("../data/test.txt")
 correct_list = [
-    "1\tHere\tis\tthe\tfirst\tsentence\t-1",
-    "1\tAnother\tsentence\tis\there\t-1",
-    "2\tThis\tsentence\tis\ton\ta\tnew\tline\t-1",
-    "2\tCorner\tcase\tincludes\tthis,\tthat,\tother,\t(ect.)\t-1",
-    "2\tHere\tis\tanother\tcorner\tcase\twith\ta\tquote\t\"test\tquote.\"\t-1",
-    "3\tNew\tsentence\tis\there\t-1"
+    "1\tHere is the first sentence\t-1",
+    "1\tAnother sentence is here\t-1",
+    "2\tThis sentence is on a new line\t-1",
+    "2\tCorner case includes this, that, other, (ect.)\t-1",
+    "2\tHere is another corner case with a quote \"test quote.\"\t-1",
+    "3\tNew sentence is here\t-1"
 ]
 # ** test_list is omitting "is" from sentence that spans new line **
 print(test_list == correct_list)
