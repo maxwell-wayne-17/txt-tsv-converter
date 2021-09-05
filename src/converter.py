@@ -1,22 +1,21 @@
-#function for reading information from the data file
-#will output a list where an index is a tab separated sentence with a number at the end
+# function for reading information from the data file
+# will output a list where an index is a tab separated sentence with a number at the end
 def read_file(file_name):
-
-    #list containing tab separated sentances with a number value at the end
+    # list containing tab separated sentances with a number value at the end
     converted_lines = list()
-    #variable to track line number to merge relationship and line
+    # variable to track line number to merge relationship and line
     line_num = 0
 
-    #open the file parameter
+    # open the file parameter
     with open(file_name, 'r') as f:
 
-        #variables to temporarily hold sentences
+        # variables to temporarily hold sentences
         sentence = ""
         sub_sentence = " "
         period_index = 0
         spanned_lines = False
 
-        #iterate through lines
+        # iterate through lines
         for line in f:
 
             if sub_sentence == " ":
@@ -27,7 +26,7 @@ def read_file(file_name):
             sentence = line
 
             period_index = sentence.find(".")
-            #if no period, go to next line and store current line in subsentence
+            # if no period, go to next line and store current line in subsentence
             while period_index != -1:
 
                 # Case where period is end
@@ -35,7 +34,7 @@ def read_file(file_name):
                     sub_sentence += sentence[0:period_index]
                 # Cases where period may not be end of sentence
                 elif sentence[period_index + 1] == '\"' or sentence[period_index + 1] == ')':
-                    #Include char and space after period
+                    # Include char and space after period
                     period_index += 2
                     sub_sentence += sentence[0:period_index]
                 # Case where period is end of sentence
@@ -45,12 +44,11 @@ def read_file(file_name):
                 # Separate **SENTENCE AND RELATIONSHIP** by tabs
                 # (e.g, each index of list is line number \t sentence \t relationship)
                 sub_sentence = sub_sentence.strip()
-
-                # Case where sentence spanned new line
-                add_sentence = str(line_num ) + "\t" + sub_sentence + "\t" + "-1"
+                # format data values
+                add_sentence = str(line_num) + "\t" + sub_sentence + "\t" + "-1"
                 # Add to list output
                 converted_lines.append(add_sentence)
-                # Clear subsentence
+                # Clear sub_sentence
                 sub_sentence = ""
 
                 # Correct line number if previous sentence spanned a line
@@ -58,18 +56,19 @@ def read_file(file_name):
                     line_num += 1
                     spanned_lines = False
 
-                #Reset sentence and period index
+                # Reset sentence and period index
                 sentence = sentence[period_index:len(sentence)]
-                #Remove period if there
-                if (sentence[0] == "."):
+                # Remove period if there
+                if sentence[0] == ".":
                     sentence = sentence[1:len(sentence)]
-                #Get next period index
+                # Get next period index
                 period_index = sentence.find(".")
 
             if period_index == -1:
                 sub_sentence = sentence.replace("\n", " ")
 
     return converted_lines
+
 
 test_list = read_file("../data/test.txt")
 correct_list = [
@@ -83,9 +82,3 @@ correct_list = [
 
 print(test_list == correct_list)
 print(test_list)
-
-
-
-
-
-
