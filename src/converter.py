@@ -12,13 +12,18 @@ def read_file(file_name):
 
         #variables to temporarily hold sentences
         sentence = ""
-        sub_sentence = "1\t"
+        sub_sentence = " "
         period_index = 0
+        spanned_lines = False
 
         #iterate through lines
         for line in f:
 
-            line_num += 1
+            if sub_sentence == " ":
+                line_num += 1
+            else:
+                spanned_lines = True
+
             sentence = line
 
             period_index = sentence.find(".")
@@ -40,12 +45,18 @@ def read_file(file_name):
                 # Separate **SENTENCE AND RELATIONSHIP** by tabs
                 # (e.g, each index of list is line number \t sentence \t relationship)
                 sub_sentence = sub_sentence.strip()
-                #sub_sentence = sub_sentence.replace(" ", "\t")
-                sub_sentence += "\t" + "-1"
+
+                # Case where sentence spanned new line
+                add_sentence = str(line_num ) + "\t" + sub_sentence + "\t" + "-1"
                 # Add to list output
-                converted_lines.append(sub_sentence)
-                # Clear subsentence ** NOT WORKING WITH SENTENCES THAT SPAN LINES **
-                sub_sentence = str(line_num) + "\t"
+                converted_lines.append(add_sentence)
+                # Clear subsentence
+                sub_sentence = ""
+
+                # Correct line number if previous sentence spanned a line
+                if spanned_lines:
+                    line_num += 1
+                    spanned_lines = False
 
                 #Reset sentence and period index
                 sentence = sentence[period_index:len(sentence)]
@@ -69,7 +80,7 @@ correct_list = [
     "2\tHere is another corner case with a quote \"test quote.\"\t-1",
     "3\tNew sentence is here\t-1"
 ]
-# ** test_list is omitting "is" from sentence that spans new line **
+
 print(test_list == correct_list)
 print(test_list)
 
